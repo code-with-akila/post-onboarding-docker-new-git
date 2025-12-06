@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fresher-mng-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fresher-mng-app
+  template:
+    metadata:
+      labels:
+        app: fresher-mng-app
+    spec:
+      initContainers:
+      - name: wait-for-mysql
+        image: busybox
+        command: ['sh', '-c', 'until nc -z db 3306; do echo waiting for mysql; sleep 2; done;']
+      containers:
+      - name: fresher-mng-container
+        image: 738408430142.dkr.ecr.ap-south-1.amazonaws.com/post-onboarding-docker:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: SQLALCHEMY_DATABASE_URI
+          value: "mysql+pymysql://root:rootpassword@db:3306/fresher_mng"
+
