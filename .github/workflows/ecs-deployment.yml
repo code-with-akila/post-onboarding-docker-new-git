@@ -32,10 +32,10 @@ jobs:
 
       - name: Build, tag, and push Docker image to ECR
         run: |
-          IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION1 }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest"
-          echo "IMAGE_URI=$IMAGE_URI"
+          IMAGE_URI="738408430142.dkr.ecr.us-east-1.amazonaws.com/post-onboarding-docker:latest"
           docker build -t $IMAGE_URI .
           docker push $IMAGE_URI
+
 
       - name: Register ECS Task Definition
         run: |
